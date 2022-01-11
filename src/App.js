@@ -1,13 +1,26 @@
 import React, {Component} from 'react';
 import './App.css';
-import AppState from './components/AppState';
+import RegSearch from './components/RegSearch';
+import RandomSearch from './components/RandomSearch';
+import TrendSearch from './components/TrendSearch';
 
 
 // key : 6Z2L7AtMebBCoZm21F8XSLoSCzw3g0v0
 class App extends Component{
   render(){
     return(
-      <div className="app">hello world</div>
+      <>
+      <h1>Image Search</h1>
+      <div>
+       <RegSearch />
+      </div>
+      <div>
+        <RandomSearch />
+      </div>
+      <div>
+        <TrendSearch />
+      </div>
+      </>
       )
   }
 }
