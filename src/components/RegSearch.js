@@ -2,23 +2,50 @@ import React, { Component } from "react";
 import axios from 'axios';
 
 class RegSearch extends Component{
+    
     state ={
-        gifs:[]
+        input:"",
+        gifs: [{}],
+    
     }
-    handleOnChange(){
+    handleOnChange=(event)=>{
+        this.setState({input: event.target.value});
+    };
 
+    handleSearch=()=>{
+        this.connectToApi(this.state.input);
+    };
+
+    connectToApi=(inp)=>{
+            axios.get("http://api.giphy.com/v1/gifs/search?q="+inp+"&api_key=6Z2L7AtMebBCoZm21F8XSLoSCzw3g0v0").then( async (response)=>{
+
+            const jsonData = await response.data.data;
+            this.state.gifs = jsonData;
+            console.log(this.state.gifs);
+            //this.setState({gifs: [...this.state.gifs, jsonData]})
+            for(let i=0;i<jsonData.length;i++){
+                console.log(this.state.gifs[i].url);
+            }
+        }).catch(err=>{alert(err)})
+    
+    };
+
+    displayGif(giffy){
+        return(
+            <div>
+                <img key = {giffy.id} className="img" src ={giffy.url} alt ="giphy"></img>
+            </div>
+        )
     }
-    handleSearch(){
-
-    }
-    connectToApi(){
-
-    }
-
+    
     render() {
         return(
-            <div>hello from regsearch</div>
-        )
+            <div>
+                <h3>hello from regsearch</h3>
+                <input id ="text_input" type="text" placeholder="regs" onChange={e=>this.handleOnChange(e)} value={this.state.input} />
+                <button onClick={this.handleSearch} >Search</button>
+            </div>
+        );
     }
 }
 export default RegSearch;
