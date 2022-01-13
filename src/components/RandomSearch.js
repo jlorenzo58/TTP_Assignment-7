@@ -4,46 +4,28 @@ import axios from 'axios';
 class RandomSearch extends Component{
     
     state ={
-        input:"",
-        gifs: [{}],
-    
+        gifs: [],
     }
-    handleOnChange=(event)=>{
-        this.setState({input: event.target.value});
-    };
 
-    handleSearch=()=>{
-        this.connectToApi(this.state.input);
-    };
-
-    connectToApi=(inp)=>{
+    connectToApi=()=>{
             axios.get("http://api.giphy.com/v1/gifs/random?api_key=6Z2L7AtMebBCoZm21F8XSLoSCzw3g0v0").then( async (response)=>{
-
             const jsonData = await response.data.data;
-            this.state.gifs = jsonData;
+            //this.setState({gifs:jsonData.images.original.url});
+            this.setState({ gifs: [...this.state.gifs, response.data.data] });
             console.log(this.state.gifs);
-            //this.setState({gifs: [...this.state.gifs, jsonData]})
-            for(let i=0;i<jsonData.length;i++){
-                console.log(this.state.gifs[i].url);
-            }
         }).catch(err=>{alert(err)})
-    
     };
-
-    displayGif(giffy){
-        return(
-            <div>
-                <img key = {giffy.id} className="img" src ={giffy.url} alt ="giphy"></img>
-            </div>
-        )
-    }
     
     render() {
         return(
             <div>
-                <h3>hello from randomsearch</h3>
-                
-                <button onClick={this.handleSearch} >Search</button>
+                <h2>hello from randomsearch</h2>
+                <button onClick={this.connectToApi} >Search</button><br/>
+                {
+                    this.state.gifs.map(x=>{
+                        return <img  style={{ width: "20%", padding: 10 }} key={x.key} src={x.images.original.url} />
+                    })
+                }
             </div>
         );
     }

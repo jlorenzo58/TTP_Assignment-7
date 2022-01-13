@@ -14,9 +14,11 @@ class App extends Component{
       <div>
        <RegSearch />
       </div>
+      <br/>
       <div>
         <RandomSearch />
       </div>
+      <br/>
       <div>
         <TrendSearch />
       </div>

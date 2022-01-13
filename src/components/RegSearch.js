@@ -5,7 +5,7 @@ class RegSearch extends Component{
     
     state ={
         input:"",
-        gifs: [{}],
+        gifs: [],
     
     }
     handleOnChange=(event)=>{
@@ -18,32 +18,23 @@ class RegSearch extends Component{
 
     connectToApi=(inp)=>{
             axios.get("http://api.giphy.com/v1/gifs/search?q="+inp+"&api_key=6Z2L7AtMebBCoZm21F8XSLoSCzw3g0v0").then( async (response)=>{
-
             const jsonData = await response.data.data;
-            this.state.gifs = jsonData;
-            console.log(this.state.gifs);
-            //this.setState({gifs: [...this.state.gifs, jsonData]})
-            for(let i=0;i<jsonData.length;i++){
-                console.log(this.state.gifs[i].url);
-            }
+            this.setState({gifs:jsonData});
         }).catch(err=>{alert(err)})
     
     };
-
-    displayGif(giffy){
-        return(
-            <div>
-                <img key = {giffy.id} className="img" src ={giffy.url} alt ="giphy"></img>
-            </div>
-        )
-    }
     
     render() {
         return(
             <div>
-                <h3>hello from regsearch</h3>
+                <h2>hello from regsearch</h2>
                 <input id ="text_input" type="text" placeholder="regs" onChange={e=>this.handleOnChange(e)} value={this.state.input} />
-                <button onClick={this.handleSearch} >Search</button>
+                <button onClick={this.handleSearch}>search</button><br/>
+                {
+                    this.state.gifs.map(x=>{
+                        return <img style={{ width: "20%", height: "400", padding: 10 }} key={x.key} src={x.images.original.url} />
+                    })
+                }
             </div>
         );
     }
